@@ -2,11 +2,11 @@
 /**
  * @type {HTMLFormElement}
  */
-const form = document.getElementById("sj-form");
+const form = document.getElementById("searchbar");
 /**
  * @type {HTMLInputElement}
  */
-const address = document.getElementById("sj-address");
+const address = document.getElementById("searchInput");
 /**
  * @type {HTMLInputElement}
  */
@@ -60,11 +60,3 @@ form.addEventListener("submit", async (event) => {
 	document.body.appendChild(frame.frame);	
 	frame.go(url);
 });
-
-function proxyNavigate(url) {
-    const proxied = search(url, searchEngine.value); // your existing search() → proxy rewrite
-    const frame = scramjet.createFrame();
-    frame.frame.id = "sj-frame";
-    document.body.appendChild(frame.frame);
-    frame.go(proxied);
-}

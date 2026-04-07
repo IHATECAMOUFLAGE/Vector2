@@ -269,12 +269,11 @@
             <li data-logo onclick="window.location.href = '/'"><img src="./img/logo.png" alt="infared logo" title="Click to go Home"></li>
             <li onclick="window.location.href = '/'" title="Click to go Home">Home</li>
             <li onclick="window.location.href = '/browser.html'" title="Click to browse">Browser</li>
-            <li onclick="window.location.href = '/exploits.html'" title="Click to find exploits">Exploits</li>
             <li onclick="window.location.href = '/ai.html'" title="Click to chat with AI">AI</li>
             <li data-selected onclick="window.location.href = '/fetchurl.html'" title="Click to check links">Link Checker</li>
         </ul>
         <ul data-signup>
-            <li data-signup onclick="window.location.href = 'https://discord.gg/example'">Discord</li>
+            <li data-signup onclick="window.location.href = 'https://discord.gg/R7gxCVR7'">Discord</li>
         </ul>
     </nav>
 
@@ -286,7 +285,6 @@
             <button id="checkBtn">Check</button>
 
             <div id="results">
-                <!-- This is replaced by the fetcher json duhh-->
             </div>
         </div>
     </main>
@@ -306,21 +304,18 @@
             resultsBox.innerHTML = "<p>Checking...</p>";
 
             try {
-                const res = await fetch(`/check?url=${encodeURIComponent(url)}`);
+                const res = await fetch(`/check?url=${url}`);
                 const data = await res.json();
-
-                const blocked = data.results.filter(r => r.blocked === true).map(r => r.name);
-                const allowed = data.results.filter(r => r.blocked === false).map(r => r.name);
 
                 resultsBox.innerHTML = `
                     <div class="result-section">
-                        <h3>Blocked By (${blocked.length})</h3>
-                        <ul>${blocked.map(b => `<li>${b}</li>`).join("")}</ul>
+                        <h3>Blocked By:</h3>
+                        <ul>${data.summary.blockedBy.map(b => `<li>${b}</li>`).join("")}</ul>
                     </div>
 
                     <div class="result-section">
-                        <h3>Allowed By (${allowed.length})</h3>
-                        <ul>${allowed.map(a => `<li>${a}</li>`).join("")}</ul>
+                        <h3>Allowed By:</h3>
+                        <ul>${data.summary.blockedBy.map(a => `<li>${a}</li>`).join("")}</ul>
                     </div>
                 `;
             } catch (err) {
