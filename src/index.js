@@ -9,6 +9,8 @@ import { scramjetPath } from "@mercuryworkshop/scramjet/path";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 
+import { runCheck } from "./check.js";
+
 const publicPath = fileURLToPath(new URL("../public/", import.meta.url));
 
 // Wisp Configuration: Refer to the documentation at https://www.npmjs.com/package/@mercuryworkshop/wisp-js
@@ -93,4 +95,19 @@ if (isNaN(port)) port = 8080;
 fastify.listen({
 	port: port,
 	host: "0.0.0.0",
+});
+
+fastify.get("/check", async (req, reply) => {
+    const targetUrl = req.query.url;
+
+    if (!targetUrl) {
+        return reply.code(400).send({ error: "Missing ?url= parameter" });
+    }
+
+    try {
+        const result = await runCheck(targetUrl);
+        return reply.send(result);
+    } catch (err) {
+        return reply.code(500).send({ error: err.message });
+    }
 });
