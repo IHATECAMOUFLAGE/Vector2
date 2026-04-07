@@ -1,237 +1,850 @@
-<!doctype html>
-<html>
-	<head>
-		<meta charset="utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-		/>
-		<title>Vector</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infared</title>
+    <script src="/scram/scramjet.all.js"></script>
+	<script src="baremux/index.js" defer></script>
+	<script src="epoxy/index.js" defer></script>
+	<script src="register-sw.js" defer></script>
+	<script src="search.js" defer></script>
+	<script src="index.js" defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
-		<link rel="shortcut icon" content="favicon.webp" />
+        :root {
+            --nav-text-color: rgb(203, 203, 203);
+        }
 
-		<link rel="stylesheet" href="index.css" />
-		<script src="/scram/scramjet.all.js"></script>
-		<script src="baremux/index.js" defer></script>
-		<script src="epoxy/index.js" defer></script>
-		<script src="register-sw.js" defer></script>
-		<script src="search.js" defer></script>
-		<script src="index.js" defer></script>
-	</head>
 
-	<body>
-        <div class="cards-container">
-        <div class="cards-wrapper">
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCHjCtL5EEqZoGI-vHnfRaUGsrAiQ_-fOJsgOIK_jY89lBWNL-nxm0HbF1Eza16kHtrS8&usqp=CAU)"></div>
-           <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMWgIRmr1_PK-JOKBAbLveo1O-zfgcyrw2ncdJ006Vte91uo47Jc9uqU5ce3_V53nxsyzZ&s=10)"></div>
-            <div class="card" style="background-image: url(data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAJQArQMBIgACEQEDEQH/xAAcAAABBAMBAAAAAAAAAAAAAAAAAQIDBAUHCAb/xAA7EAABAwMDAgMGBAUDBAMAAAABAgMRAAQhBRIxE0EGIlEHFDJhcYEjQqHwM5HB4fEVUrEkYoLRFkNy/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AN40UUUBRRSUC0U37UkkGD9Z7UD5pJqIuxJ2Kx2jJoUoyOSTMEDAoJZGflRIx86i3HmDjnHxY7UgWPL5T5oxHw470E0iiRE1EFeYghXliSRg/SkSqQFQQCBAIyKCaRRI9ahUTIJSTMZApoWY+BQwPy/OgsTS1ChckwI57RS7jBMHHb1oJJpajCoJwT/SnA/I0DqKSigWiiigKKKKAphOPnTjUZPMcx6UASZgfF6xionHN3KVlEZGw+tIop2TH4U8BJmZqveKU5bvpiHEoVsUUqAI/pQQ3RWlRU2HUqT1FbkWyiTkY5yPl3+1WVkqbfLaSlA3BaVNGVmMR6j/AJrlB7xr4jud/W1m5UXErSqVASFkFQ4xwPp2ivdez72mOovL1zxbr25KGYtC7brXCzM/wxxhMyPpGaDeoKlKgpVuSshtZaICfKOf1qXZkwkTI3nZ8eO1YbSnlqBW+46UuqVvQplRkbAqQQImPTEY5msmhKElBgHeodGEK8p2x5vT9KCQBO1uU+Ty9JPT/h470sqBSCJX5QpQQYP7/Smt7t5GOonb1iUqgiO1NKgG2CmA0VoCAUKkfX+9BG42oIQsAGVoG3okkebOJwP+Oaxl5qdhav8A+nKuWFaiSnyNtFZUC4DtCAqZAyfQebisN7T9UvNA8IXVzpb67fUWyyA6hJgJLkQCoEdzjmufT4t10kqOqv78eaU7vj38xPxZ/TjFB1TbPk2zrq0OKYS64ktC1UlxRDhAIByR8+/IxWTaSTJcKVKBIBTjFaO9mvjRd1d2Vk9fXLuq3Fw4AXhIIVLijgRsxx8W4iISCK3QChLSyNwZBXvG1W4mew/n/SgsGAFkA7RO4bcn6UBUESDk+WE8Y71EULVuX5OoJ6ZzABHfNKIle1MQT1ZScmO1BYSTkHkfKnVEnMREH4ccY71IngTQOooooCiiigQ1ApSZhWAIPf1qc8VA6AeT6YkjvQRJcVv3SJiOFf7orH62hx3RL5prpney4kBSnE5MgZTkfar/AJYgED0hZ/3Ur07oACniDtQVHaRPJoOP9Y8OarooQdUtfd96lITK0mSmJiD8+e9N0fQ9T1dx9GlWjl04y0XFpbEkJAk/U4wOT2rpnXPBega64l/V9PbWi3LoDiLhxCkiRAgRjnHAjHJqXw94L0Tw09cuaPbLtn7hCmwPe3VBxA4mTAOee04oMpYw9ZsNOwHEo2Nbd4g9MSFfzP8AmriEFMhESID+5SzA2/l/T9e9T29shDJQAUhXISokAxGKjcSlpxKVmAkgNecyox3/AFoIkhGxmZ6Eo92PnKidp+P+/wB6apamltklIuCW0O4WUQSfh/f1qwknco46h29Yb1EJEflpiS1sbhR6Mp2EKMk/P9KDXntFsrjU/Bt1bWDYuH1otkhLa3TnrHkrwBnJORmYAFc+L0+6Y1D3J1oouQ4Gy2s7YUTHPEfPiuuV2NuGy24n8Vzp9ZPVVChu7+s8Z5GDivOat7OvDOrXbt9fWBcuHY3q99eiAQmIniAPvQeB9m/s+CL+w1jUm71o25cKkBSdqlpXtCklOdnPeSfUVuxzqFRA6fvZSvpDzBESPi+fH9Kh0u0Y0+1YtLFCUs27fSbR1VHypIA55MAZqd4thl3cshgBXUXuVIz/AHPFAbEBL0T0tyi/JXuBgfD8vpU5SdwCo3SS1k+neoWblKnS3vR1AtSUgScCJ7fOpmly6oNEKhUOST5TA4/SgkDagrcI83x5Pp2qVIgAUtFAUUUUBRRRQIqqVw6R8Ko4ODPf9/XirixNUNQ2rt3UOILkpHUZGdyJziMyJEd6DE3viGwsblm3u9SYZdeXtaQ4/Bc8+0hPqQcfXHzrJJuWHWFuNXKVWoUtK30u5QtKtpT9iCPlEVoD2n6FaaZe6bc6FpLSbVtpb90Gx1ER1oHUKe35YxHHasNoHtF1bwyFo0m209hDilrW2GFbVlSpyN35fhHoPXmg6fKlFzMB6FbG9+FAHk/p9JocWhIeJc8g3dRZWZbx29K53a9rPjS6tL5i1QwtSkrfW82worYbPJB3QEpkRINZt32m+JCt7URe6e3pdslxNs4uzWgXrkCEhBXJIMSQfLukjNBvBVyyyu3aW8lK3pDSSrLhAkx64E0xdyhbi0NLQrYdrx3ZbG2f/X8650Htn8Up96STZEPqJSVMK/CkRCPNgYnM5Jqey9sniN64s0XVzZWrLRlbqbVSy5CSAFjfkEwcRn+VBv5F2wpaG/eE7UlvpKDp3OFSSQFY7/rULl8hl1CVuspulqaS4yXzCNxIEYyTBA4mK0xee1PW7WzOoMarpd05dhARaC2UCzAheN8oyRzO7kRWEb9sfitNpbMBy0UWCkl0tK3ux/vO7M94AoOgrW4aXC271NwyoJU2vq/lKiM+vBz347VZW7CQeokAxy4f90cx++K5b1fx5rOraW/puoPNuMvlBd/DMrUlW7dM8nAPyAwKXRfaDrOi2DFlp62mm2UgIIQSfj3knPfKT8j96Dp16+tUKU2bttLe1SlL60KSQsJIGOATH6Vr/wAe+NkoRqtlp+ssWN5YsOhUXElxWNqUpEebCsz5cCFTjWS/a34rWlxJvGwFpWmQ2ZG5e7HmwQJSPke/NeR1nUn9YvPeXggBKA2202nalpA+FKROAB9aDdns88V6jrCRea9fXJaedejpqU2lpO0biDuO5KYB7bJnM42spxe4b4QsKItwHf4vl/Nj6+vE1pP2KsLXaJNu211C4VlK29nW2Z+I/wAQgnERsKpMhQFbuCh+IQ6Tk9Q7x+Edo/z96BweUvHlChh0Bf8AD8s1ZayhJmcDMzUCVztyYHw+YfiYqwjKRIjFA6iiigKKKKBFVUdyI6hbEp/FBTnzfD9/61bV8qqucz0y5O38LGM/F9v6UHi/aD4es9a0i8curJXvTdqoN7LhKFDzzA9ZwYOM+tc26hpqrS0tXnS4l54uBbS2Ft9MoVtIkiFH1jjg5rrwNKKx1HXFp2/xSlETv44n5f3rTHto0a2b1O1u1KU2UsP3C2XQSHYcSIAR5Ug7ucT3M0HiPCGh299aLfvl3Vs044GkLQ8loXEgy0Cr1j4j5RGeRUPjbTUaXdbW7htKHXCtuxQhxAZQQIVCySkkgyk+bGeRWC1C+VdvqDaehahalNWqXFKbZB5CZNSXt773ap6yN931FKdulLUpx0GICpPaOec0FAmat6ewxcPobursWrRB3OlsrjGPKM5OPvVOlBI4oPfWfhPRrvw5b3qdRUHSoKeuP/qSiSFDbEhQMAA5VkgEA1k/F3s+sNN8PC80tq9cvFe7bGg+2/PU3SNqM/l54M4714Uao0m5aKbFv3UBBdsw6vpvKSmNys85n5VkbDVV6g7aaa0s2Klpt2U3aX3lFvp7vNtBPO7gDHag8w4CFkGZGM0+0Z94u2WCop6riUbggqIkxMDJ+gpymlOXHTbCnFqVACQSVGew5qMFxh6RvbcbV8wUkf8ABoJb+290vLi33FfRdU3uKCgmCRO05HHByKt+HLVm+1qytblJUy68ErAcS2SP/wBKwPvWOccW6tTjq1LWokqUoySTySay/hHcfEenBCVKV7wkgJCCT9N/l/nQdE+FbC1tLEDRRc2OmdW4WVFxr8GUpglKhuTmYBgjvXsdxnuIJgbk/j+Xn9+npXnPC18NU0x+4StTqk3DyHrZLKEJfXAmARMDsVZM57V6QJVMBZVvUYICfwccD9nmgck5OTk+YFQlrH7/AJ1ZbnYnM459ag2bQkgyfzeUefEVM3O0HgRx6UElFFFAUUUUCVXc5MHYrEr2iCJ4qwTFVnUhSZW0VpJHljIM8/bmgrDaG0qDJS1Me7bEzO74/wCv96wvi3TPf7FZWXXltNOFK0MoUMqHlIJAOOxxgHkCs4GlBcDZ19uXw0I27p2c/vmq922z7o8VWxVawvfa9HLiir4v+T+tBx4q2uElW5hwFM7gUnyxzNIWXGoLqFIHEkEVs72iBzRkpeX744zqLNylCxqCwCpZSTjb504+LG/BIEV4rxBryda2BDN2jY867/1F6p/CgnGQM+XJ7yPSg9VrPs5Romm6TdX2oKQq5eKbpUS0hIbLkoMSSRgSBn5ZrxD9syLdy6t7ptTQuC02w5h8ogkLKQIjgHPNdGa7ZM6z4Wtnrd1YQFpcQ5bEtdTc0Gyd6cnCjHG4gIwDNabT4Htv+qT/AK6zNqlReBt/4cEQVefA2nJ7K8ueaDyeoWwtlBIure4Cm0q3MElIJgxkDI7/ANaXRb4aZqlveltTgZWF7EOqbKo7bk5H1FMuW2/eXG7Z1TzIUQ24W9pWJwdsmPpNQdP50Gd8I6c/rWvt21m4+i6VuXbrZiW3fyKUScJCoJIkxkAmsp4w8GXujJvLxx5JYb27veCestxRAIgCJk7hn4YPOKu+xewt3/GbDl2208lpILbSgCreT5VpH/aUySOMVuHx34T/ANd069tnNQuEXF02lLe1slJKXArbt3CRAyP/AC+VBy5WT8OWaL/WrK1dS8pDrwSQwAV/+MkCfqRU/ijw8/4d1VenXHVLraApZW1sExmMmUzwe/yrEtL6TiVRugzgxQdYeF9NY01Nxb27N2Sq5fcRdXW1ZbkInzFRJBxE+hmvSNiF4Ts83mO0efHP79K177JLxWpeGX74B33Z27fLls8rruLkJj8QkExB5GZHEV71QKcrQVnPSPT/AIfl4/f0oLTkKUITKknmPhNOSMD19agaBIkpg4KpTG7FWGwAkQI+VA6iiigKKKKBCJqAp80pACsSY5E1OajKRERj0+c0FVTaOnHT/BnCAgzu3c/zpriDvEBv3gpUEuFslISSMHP0qwoELBSB1I5jtNROhtLKtyfwc7kgGSd3+aDRvt+Z6LmnOZHUduPJs2pGRkA9z6zB9K0+38WOYrsa/tUvOSpi3cvum4LZx1pRQgHbhXpwmf0rkB4HqO71ZlXHEzQdcaWCbHzob932jrINsqXE9JPBmFfUD5RUj1mysWYVa2xbSse7pVaklkdMp9cckfTHepNPSVWVkXdpWGwbdQSYT5PzdvWrCAoOLLQAUFJNx5Veby/lz9P80HMdm+1o3tEvmEs2aEJvHWQrcGgxCjBQVGEnEZnBIrzN/c+83j74aYtwtZUGWBDbc9kjMD71sj2pW6LTSXUMhbaVPohK9oUpAnZuJEq2jA25H55VXhvBNym28RWyy0la1HY2suJQWVHhaSryyP8AukZyKDfXsq0hTfh3S9QS+4pa7RBAU3wkqVKNwiUjlI7EqJmRHuihvoQpo9EkSnYZnd/7rzvs4z4G0RTmUFhMQJO7cfTEcV6aDuPw9Qp+IgxE8UHjvaWw0vwlrCn2G13vuTgQ+lkpSlorT5d5wD8PftNcxahbm0vHbZS2lqaO0qaWFoJHoociutfEjAc0K+aDKHLRba+o2tpxaiveJwkyR8XHy7Vzr4n09F941as0qLSrpLe91LCnCtRBlcJHnJ9UDae1B6/2OPBu1siXyendkbS+gBvfiB3Ru9DO+AEwQa3o67J2lJ2CQv8ADJkR2Na+9nfgxzw/b7Lm7F6i3ddStKmFo2SkZQIBVPcncMDbGa984HFLCUEApUdh2n0oJW/iAiAD5ZTEYqwngVEjBOM/m/lUqeBFA6iiigKKKKBDTSO45+tPpDQQObQnzHyTyJmZqNanCvybevB2glW2JFWykGkKARQYXUFW6bO76qlJ08Id95Wnq9QKn8u3MfFx8ormbxBY/wCmhdpetXLemtOPizVLC3i9tThwpJ8slP24zNdR6gl3cVWa0m+DS+i266pLauMqgHjGYMTWhtZ9lGsXBN2bzSEXrj6xcMsbm2WkpCcpAb7CSf0kmg3hpi0K01vYT0+mBcSVSPwx8P6cf81aEK6QcGAR0IUqVeU/F+vNQ2bamWLZp5Seq2nayErVC4QJnH1x96spJBUZBOOqCswjy/lx9KDVvtzt0f8AxRbi2mOuLlgFSAZBIMxPAJ9Oe9a/9m3g7ULnW7S5u7RKLJxtK27hYDgQV/AoASCcHChAxuiRWzPbEbJfhdAu33zZ+9Mb1MK3ugbVQQlcCeO9Z72bW9m14S0Y2TTSX/cmFPACI3JBKo9TGT3gelBm/D+njStMtrFptppTDYQW21LLaU7jxurIK2hrzE9LGczM01OwMpCVfh42q3GVGe559KsN7iPPE/I0GF8Raa7qum3Vizdqtbt5pSGnmyr8Mbhn0nA/WK85pns/UbkXF7qQuFNuvJCwwG3ENlQIQkiNogDIymISQJn3ryE9MhSlBPcg5pApSQU+XdmBNBHs2QBEgEJyfSllIK44k78n07UKOFeYbc7zuOPpSmQclIIJ2Dcc470EiMgRx2zTk4FMQRKsye4nipKBaKKKAooooEooooEWNwiSM9qhVv3BQnfBARuwf3FT0hE/5oKykgoWncdqpKl78gzxSLOVOboUjdtAcgKx3qwpCjwY+9IW1Gc8z3oKJQrqKO4wVqMdb/sHaP3zUgV1NoKoKCCkB2dx28H99pq0G1Rk0vTM8k/U0GG1TRrLW20s6nbIuW0rQ4phxcoQoAgQPv8Aer+kWbOn2FvZWrQbt7dlLbaQrdtAxE1ZDaoA3HHeefrT0AgZoHUYFFIZoGrOITBPpNRkDMHsfzVIEkHmR9aUg/KgiByR9cbqekZPzOc8Uu0zzTooEApaKWgKKKKAooooCiiigKKKKAooooCiiigKKKKAooooCiiigKKKKAooooCiiig//9k=)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQka_319CR1UbDqb4vGkioh0yCPy8ur4siRX89-JSWiaw8zd2BzNWdy2uObv68HOq8jFA&usqp=CAU)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRT9lgjb7q6WpUDXQ3c-SAnwALzkJ1iCkdrM6no6kqEcH3FE1s3muVCGs1Jc97Ev1xFt7Z&s=10)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRbSeOMMPaRO5342B51AaFVIL-Wtpc_P4Yi39uT4Q4JaxFxLFHUS1CmiXjsEt6nC6py8bj&s=10)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCHjCtL5EEqZoGI-vHnfRaUGsrAiQ_-fOJsgOIK_jY89lBWNL-nxm0HbF1Eza16kHtrS8&usqp=CAU)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMWgIRmr1_PK-JOKBAbLveo1O-zfgcyrw2ncdJ006Vte91uo47Jc9uqU5ce3_V53nxsyzZ&s=10)"></div>
-            <div class="card" style="background-image: url(data:image/jpeg;base64,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)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQka_319CR1UbDqb4vGkioh0yCPy8ur4siRX89-JSWiaw8zd2BzNWdy2uObv68HOq8jFA&usqp=CAU)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRT9lgjb7q6WpUDXQ3c-SAnwALzkJ1iCkdrM6no6kqEcH3FE1s3muVCGs1Jc97Ev1xFt7Z&s=10)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRbSeOMMPaRO5342B51AaFVIL-Wtpc_P4Yi39uT4Q4JaxFxLFHUS1CmiXjsEt6nC6py8bj&s=10)"></div>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            font-family: "Rubik", sans-serif;
+            font-weight: 450;
+        }
+
+        html, body {
+            width: 100%;
+            height: auto;
+            min-height: 100vh;
+            background: rgb(19, 19, 19);
+        }
+
+        .screensizewarn {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: black;
+            color: white;
+            z-index: 9999;
+            width: 100%;
+            height: 100vh;
+            text-align: center;
+            font-style: italic;
+            font-weight: 100;
+            font-size: 15px;
+        }
+
+        nav {
+            margin-bottom: 100px;
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100px;
+            color: rgb(55, 55, 55);
+            font-size: 17px;
+            font-weight: 700;
+
+            & li {
+                cursor: pointer;
+                user-select: none;
+            }
+
+            & ul[data-main] {
+                position: absolute;
+                left: 5vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+                gap: 35px;
+
+                & img {
+                    background-position: center;
+                    background-size: 100%;
+                    background-repeat: no-repeat;
+                    width: 130px;
+                    height: 80px;
+                    border: none;
+                    outline: none;
+                    display: block;
+                }
+
+                & li {
+                    transition: 0.2s;
+                }
+
+                & li[data-selected] {
+                    color: var(--nav-text-color);
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        width: 100%;
+                        height: 1.5px;
+                        background: var(--nav-text-color);
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                    }
+                }
+
+                & li:hover {
+                    color: var(--nav-text-color);
+                }   
+            }
+            & ul[data-signup] {
+                z-index: 1;
+
+                & li {
+                    background: rgb(57, 56, 56);
+                    color: white;
+                    border-radius: 100vh;
+                    width: 80px;
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 20px;
+                    padding: 10px;
+                    font-size: 15px;
+                    position: absolute;
+                    right: 5vw;
+                    transform: translateY(-20px);
+                    border: rgb(181, 181, 181) 2px solid;
+                    box-shadow: 0 0 1px rgb(255, 255, 255);
+                }
+            }
+        }
+
+        main {
+            position: absolute;
+            left: calc(5% - 2.5rem);
+            width: calc(90% + 5em);
+
+            & .games {
+                border-radius: 5px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, 200px);
+                grid-auto-rows: 1fr;
+                gap: 1em;
+                padding-top: 2em;
+                padding-bottom: 2em;
+                margin-bottom: 4em;
+                justify-content: center;
+                align-content: center;
+                justify-items: center;
+                align-items: center;
+                border: none;
+                background-image: url('./img/background.png');
+
+                & > card {
+                    cursor: pointer;
+                    user-select: none;
+                    backdrop-filter: blur(10px);
+                    text-align: center;
+                    background: rgba(255, 255, 255, 0.4);
+                    height: 200px;
+                    width: 200px;
+                    overflow: hidden;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    align-content: center;
+                    justify-content: center;
+                    border: 1px black solid;
+                    border-radius: 5px;
+                }
+            }
+        }
+
+        @media (max-width: 800px) {
+            body > * {
+                display: none;
+            }
+
+            .screensizewarn {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            ul[data-signup] {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="screensizewarn">
+        <h1>Mobile devices are not supported<br><br>If you believe this is an issue, join the discord: https://discord.gg/example</h1>
+    </div>
+    <nav>
+        <ul data-main>
+            <li data-logo onclick="window.location.href = '/'"><img src="./img/logo.png" alt="infared logo" title="Click to go Home"></li>
+            <li data-selected onclick="window.location.href = '/'" title="Click to go Home">Home</li>
+            <li onclick="window.location.href = '/browser.html'" title="Click to browse">Browser</li>
+            <li onclick="window.location.href = '/ai.html'" title="Click to chat with AI">AI</li>
+            <li onclick="window.location.href = '/linkchecker.html'" title="Click to check links">Link Checker</li>
+        </ul>
+        <ul data-signup>
+            <li data-signup onclick="window.location.href = 'https://discord.gg/example'">Discord</li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="games" id="games">
         </div>
-    </div> 
-        <div class="cards-container-2">
-        <div class="cards-wrapper">
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq1_jjw0D4GzxNiZiIetbSXmsubq2HeQRNLc7yynN-tJbajuVnLtWD_MLOKLeyFEgDYmgwiQ&s=10)"></div>
-           <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMWgIRmr1_PK-JOKBAbLveo1O-zfgcyrw2ncdJ006Vte91uo47Jc9uqU5ce3_V53nxsyzZ&s=10)"></div>
-            <div class="card" style="background-image: url(data:image/jpeg;base64,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)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQka_319CR1UbDqb4vGkioh0yCPy8ur4siRX89-JSWiaw8zd2BzNWdy2uObv68HOq8jFA&usqp=CAUg)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRT9lgjb7q6WpUDXQ3c-SAnwALzkJ1iCkdrM6no6kqEcH3FE1s3muVCGs1Jc97Ev1xFt7Z&s=10)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRbSeOMMPaRO5342B51AaFVIL-Wtpc_P4Yi39uT4Q4JaxFxLFHUS1CmiXjsEt6nC6py8bj&s=10)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq1_jjw0D4GzxNiZiIetbSXmsubq2HeQRNLc7yynN-tJbajuVnLtWD_MLOKLeyFEgDYmgwiQ&s=10)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMWgIRmr1_PK-JOKBAbLveo1O-zfgcyrw2ncdJ006Vte91uo47Jc9uqU5ce3_V53nxsyzZ&s=10)"></div>
-            <div class="card" style="background-image: url(data:image/jpeg;base64,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)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQka_319CR1UbDqb4vGkioh0yCPy8ur4siRX89-JSWiaw8zd2BzNWdy2uObv68HOq8jFA&usqp=CAU)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRT9lgjb7q6WpUDXQ3c-SAnwALzkJ1iCkdrM6no6kqEcH3FE1s3muVCGs1Jc97Ev1xFt7Z&s=10)"></div>
-            <div class="card" style="background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRbSeOMMPaRO5342B51AaFVIL-Wtpc_P4Yi39uT4Q4JaxFxLFHUS1CmiXjsEt6nC6py8bj&s=10)"></div>
-        </div>
-    </div> 
-		<div class="flex-center desc left-margin">
-      <h1>Vector</h1>
-			<p>
-				Vector is the BEST proxy site for school! Using scramjet, the BEST proxy service as the proxy while being ad-less!
-                <br>
-                <br>
-                <span style="font-weight: 700">
-                    Games down below
-                </span>
-			</p>
-		</div>
+    </main>
+    <script>
+        const gamedata = [
+        {
+            "title": "10 Minutes Till Dawn",
+            "url": "/games/10-minutes-till-dawn/"
+        },
+        {
+            "title": "1v1lol",
+            "url": "/games/1v1lol/"
+        },
+        {
+            "title": "1v1space",
+            "url": "/games/1v1space/"
+        },
+        {
+            "title": "2048",
+            "url": "/games/2048/"
+        },
+        {
+            "title": "9007199254740992",
+            "url": "/games/9007199254740992/"
+        },
+        {
+            "title": "DOOMORI",
+            "url": "/games/DOOMORI/"
+        },
+        {
+            "title": "Offline Paradise",
+            "url": "/games/OfflineParadise/"
+        },
+        {
+            "title": "Shape Shootout",
+            "url": "/games/ShapeShootout/"
+        },
+        {
+            "title": "Stickman Survival",
+            "url": "/games/Stickman-Survival/"
+        },
+        {
+            "title": "Achievement Unlocked",
+            "url": "/games/achievementunlocked/"
+        },
+        {
+            "title": "A Dark Room",
+            "url": "/games/adarkroom/"
+        },
+        {
+            "title": "Adrenaline Challenge",
+            "url": "/games/adrenalinechallenge/"
+        },
+        {
+            "title": "Align 4",
+            "url": "/games/align-4/"
+        },
+        {
+            "title": "Angel Under",
+            "url": "/games/angelunder/"
+        },
+        {
+            "title": "Aquapark Slides",
+            "url": "/games/aquapark-slides/"
+        },
+        {
+            "title": "Astray",
+            "url": "/games/astray/"
+        },
+        {
+            "title": "Avalanche",
+            "url": "/games/avalanche/"
+        },
+        {
+            "title": "Bad Ice Cream 2",
+            "url": "/games/bad-ice-cream-2/"
+        },
+        {
+            "title": "Baldi's Basics",
+            "url": "/games/baldis-basics/"
+        },
+        {
+            "title": "Ballistic Chickens",
+            "url": "/games/ballistic-chickens/"
+        },
+        {
+            "title": "Big Red Button",
+            "url": "/games/bigredbutton/"
+        },
+        {
+            "title": "Black Knight",
+            "url": "/games/blackknight/"
+        },
+        {
+            "title": "Bloons TD",
+            "url": "/games/bloonstd/"
+        },
+        {
+            "title": "Bloons TD 2",
+            "url": "/games/bloonstd2/"
+        },
+        {
+            "title": "BNTTS",
+            "url": "/games/bntts/"
+        },
+        {
+            "title": "Bonk.io",
+            "url": "/games/bonkio/"
+        },
+        {
+            "title": "Boxhead 2 Play",
+            "url": "/games/boxhead2play/"
+        },
+        {
+            "title": "Bloons TD 5",
+            "url": "/games/btd5/"
+        },
+        {
+            "title": "Burger And Frights",
+            "url": "/games/burger-and-frights/"
+        },
+        {
+            "title": "Champion Island",
+            "url": "/games/champion-island/"
+        },
+        {
+            "title": "Cluster Rush",
+            "url": "/games/cluster-rush/"
+        },
+        {
+            "title": "Connect 3",
+            "url": "/games/connect3/"
+        },
+        {
+            "title": "Cookie Clicker",
+            "url": "/games/cookie-clicker/"
+        },
+        {
+            "title": "Craftmine",
+            "url": "/games/craftmine/"
+        },
+        {
+            "title": "CTR",
+            "url": "/games/ctr/"
+        },
+        {
+            "title": "CTR Holiday",
+            "url": "/games/ctr-holiday/"
+        },
+        {
+            "title": "CTR TR",
+            "url": "/games/ctr-tr/"
+        },
+        {
+            "title": "Death Run 3D",
+            "url": "/games/death-run-3d/"
+        },
+        {
+            "title": "Defend The Tank",
+            "url": "/games/defend-the-tank/"
+        },
+        {
+            "title": "Dodge",
+            "url": "/games/dodge/"
+        },
+        {
+            "title": "Doge 2048",
+            "url": "/games/doge2048/"
+        },
+        {
+            "title": "Double Wires",
+            "url": "/games/doublewires/"
+        },
+        {
+            "title": "Draw The Hill",
+            "url": "/games/draw-the-hill/"
+        },
+        {
+            "title": "Drift Boss",
+            "url": "/games/drift-boss/"
+        },
+        {
+            "title": "Drive Mad",
+            "url": "/games/drive-mad/"
+        },
+        {
+            "title": "Duck Life 2",
+            "url": "/games/ducklife2/"
+        },
+        {
+            "title": "Duck Life 4",
+            "url": "/games/ducklife4/"
+        },
+        {
+            "title": "Elastic Man",
+            "url": "/games/elasticman/"
+        },
+        {
+            "title": "Endless War 3",
+            "url": "/games/endlesswar3/"
+        },
+        {
+            "title": "Escaping The Prison",
+            "url": "/games/escapingtheprison/"
+        },
+        {
+            "title": "Evil Glitch",
+            "url": "/games/evil-glitch/"
+        },
+        {
+            "title": "Evolution",
+            "url": "/games/evolution/"
+        },
+        {
+            "title": "Fair Squares",
+            "url": "/games/fairsquares/"
+        },
+        {
+            "title": "Fantasy Dash",
+            "url": "/games/fantasy-dash/"
+        },
+        {
+            "title": "Fireboy & Watergirl Forest Temple",
+            "url": "/games/fireboywatergirlforesttemple/"
+        },
+        {
+            "title": "Frying Nemo",
+            "url": "/games/frying-nemo/"
+        },
+        {
+            "title": "Fuclient",
+            "url": "/games/fuclient/"
+        },
+        {
+            "title": "Gacha Life",
+            "url": "/games/gachalife/"
+        },
+        {
+            "title": "Game Inside",
+            "url": "/games/game-inside/"
+        },
+        {
+            "title": "GDTD",
+            "url": "/games/gdtd/"
+        },
+        {
+            "title": "Geo Challenge",
+            "url": "/games/geochallenge/"
+        },
+        {
+            "title": "Geo Dash",
+            "url": "/games/geodash/"
+        },
+        {
+            "title": "Geo Dash Lite",
+            "url": "/games/geodashlite/"
+        },
+        {
+            "title": "Geo Geo",
+            "url": "/games/geogeo/"
+        },
+        {
+            "title": "Geo Jump",
+            "url": "/games/geojump/"
+        },
+        {
+            "title": "Geo Rash",
+            "url": "/games/georash/"
+        },
+        {
+            "title": "Goodnight",
+            "url": "/games/goodnight/"
+        },
+        {
+            "title": "Google Feud",
+            "url": "/games/google-feud/"
+        },
+        {
+            "title": "Grindcraft",
+            "url": "/games/grindcraft/"
+        },
+        {
+            "title": "Happy Hop",
+            "url": "/games/happy-hop/"
+        },
+        {
+            "title": "Happy Wheels",
+            "url": "/games/happywheels/"
+        },
+        {
+            "title": "Hextris",
+            "url": "/games/hextris/"
+        },
+        {
+            "title": "Ice Age Baby",
+            "url": "/games/iceagebaby/"
+        },
+        {
+            "title": "Idle Shark",
+            "url": "/games/idle-shark/"
+        },
+        {
+            "title": "Jetpack Joyride",
+            "url": "/games/jetpack-joyride/"
+        },
+        {
+            "title": "Level 13",
+            "url": "/games/level13/"
+        },
+        {
+            "title": "Line Rider",
+            "url": "/games/linerider/"
+        },
+        {
+            "title": "Madalin Stunt Cars 2",
+            "url": "/games/madalin-stunt-cars-2/"
+        },
+        {
+            "title": "MC2D",
+            "url": "/games/mc2d/"
+        },
+        {
+            "title": "Merge Round Racers",
+            "url": "/games/merge-round-racers/"
+        },
+        {
+            "title": "Minesweeper",
+            "url": "/games/minesweeper/"
+        },
+        {
+            "title": "Missiles",
+            "url": "/games/missiles/"
+        },
+        {
+            "title": "Monster Tracks",
+            "url": "/games/monster-tracks/"
+        },
+        {
+            "title": "Moto X3M",
+            "url": "/games/motox3m/"
+        },
+        {
+            "title": "Moto X3M Pool",
+            "url": "/games/motox3m-pool/"
+        },
+        {
+            "title": "N-Gon",
+            "url": "/games/n-gon/"
+        },
+        {
+            "title": "NS Shaft",
+            "url": "/games/ns-shaft/"
+        },
+        {
+            "title": "OM Bounce",
+            "url": "/games/om-bounce/"
+        },
+        {
+            "title": "Osu!",
+            "url": "/games/osu!/"
+        },
+        {
+            "title": "Pandemic 2",
+            "url": "/games/pandemic2/"
+        },
+        {
+            "title": "Particle Clicker",
+            "url": "/games/particle-clicker/"
+        },
+        {
+            "title": "Particle Clicker",
+            "url": "/games/particleclicker/"
+        },
+        {
+            "title": "Pi Client",
+            "url": "/games/piclient/"
+        },
+        {
+            "title": "Pigeon Ascent",
+            "url": "/games/pigeon-ascent/"
+        },
+        {
+            "title": "Popcat Classic",
+            "url": "/games/popcat-classic/"
+        },
+        {
+            "title": "Portal Flash",
+            "url": "/games/portalflash/"
+        },
+        {
+            "title": "Protektor",
+            "url": "/games/protektor/"
+        },
+        {
+            "title": "Push The Square",
+            "url": "/games/push-the-square/"
+        },
+        {
+            "title": "Retro Bowl",
+            "url": "/games/retro-bowl/"
+        },
+        {
+            "title": "Riddle Transfer",
+            "url": "/games/riddletransfer/"
+        },
+        {
+            "title": "Riddle Transfer 2",
+            "url": "/games/riddletransfer2/"
+        },
+        {
+            "title": "Robux Clicker",
+            "url": "/games/robuxclicker/"
+        },
+        {
+            "title": "Runner",
+            "url": "/games/runner/"
+        },
+        {
+            "title": "Sandboxels",
+            "url": "/games/sandboxels/"
+        },
+        {
+            "title": "Santy Is Home",
+            "url": "/games/santy-is-home/"
+        },
+        {
+            "title": "Scrap Metal",
+            "url": "/games/scrapmetal/"
+        },
+        {
+            "title": "Scratcharia",
+            "url": "/games/scratcharia/"
+        },
+        {
+            "title": "Shogun Showdown",
+            "url": "/games/shogunshowdown/"
+        },
+        {
+            "title": "Shuttle Deck",
+            "url": "/games/shuttledeck/"
+        },
+        {
+            "title": "Sky Car Stunt",
+            "url": "/games/sky-car-stunt/"
+        },
+        {
+            "title": "Slime Rush TD",
+            "url": "/games/slime-rush-td/"
+        },
+        {
+            "title": "Slope 2",
+            "url": "/games/slope-2/"
+        },
+        {
+            "title": "Smoking Barrels",
+            "url": "/games/smokingbarrels/"
+        },
+        {
+            "title": "Soccer Random",
+            "url": "/games/soccer-random/"
+        },
+        {
+            "title": "Soldier Legend",
+            "url": "/games/soldier-legend/"
+        },
+        {
+            "title": "Soundboard",
+            "url": "/games/soundboard/"
+        },
+        {
+            "title": "Space Company",
+            "url": "/games/space-company/"
+        },
+        {
+            "title": "Spelunky",
+            "url": "/games/spelunky/"
+        },
+        {
+            "title": "Spinning Rat",
+            "url": "/games/spinningrat/"
+        },
+        {
+            "title": "Stack",
+            "url": "/games/stack/"
+        },
+        {
+            "title": "Stack Bump 3D",
+            "url": "/games/stack-bump-3d/"
+        },
+        {
+            "title": "Stealing The Diamond",
+            "url": "/games/stealingthediamond/"
+        },
+        {
+            "title": "Stick Archers",
+            "url": "/games/stick-archers/"
+        },
+        {
+            "title": "Stick Merge",
+            "url": "/games/stick-merge/"
+        },
+        {
+            "title": "Stick War",
+            "url": "/games/stickwar/"
+        },
+        {
+            "title": "Storm The House 2",
+            "url": "/games/stormthehouse2/"
+        },
+        {
+            "title": "Subway Surfers",
+            "url": "/games/subway-surfers/"
+        },
+        {
+            "title": "Subway Surfers NY",
+            "url": "/games/subway-surfers-ny/"
+        },
+        {
+            "title": "Superhot",
+            "url": "/games/superhot/"
+        },
+        {
+            "title": "Super Mario Construct",
+            "url": "/games/supermarioconstruct/"
+        },
+        {
+            "title": "Sushi Unroll",
+            "url": "/games/sushi-unroll/"
+        },
+        {
+            "title": "Synesthesia",
+            "url": "/games/synesthesia/"
+        },
+        {
+            "title": "Tactical Weapon Pack 2",
+            "url": "/games/tactical-weapon-pack-2/"
+        },
+        {
+            "title": "The Hotel",
+            "url": "/games/the-hotel/"
+        },
+        {
+            "title": "Tiny Fishing",
+            "url": "/games/tiny-fishing/"
+        },
+        {
+            "title": "Tiny Islands",
+            "url": "/games/tiny-islands/"
+        },
+        {
+            "title": "Toss The Turtle",
+            "url": "/games/tosstheturtle/"
+        },
+        {
+            "title": "Townscaper",
+            "url": "/games/townscaper/"
+        },
+        {
+            "title": "Twitch Tetris",
+            "url": "/games/twitch-tetris/"
+        },
+        {
+            "title": "Volley Random",
+            "url": "/games/volley-random/"
+        },
+        {
+            "title": "Weavesilk",
+            "url": "/games/weavesilk/"
+        },
+        {
+            "title": "WebGL Fluid Simulation",
+            "url": "/games/webgl-fluid-simulation/"
+        },
+        {
+            "title": "WebXash",
+            "url": "/games/webxash/"
+        },
+        {
+            "title": "Wiicraft",
+            "url": "/games/wiicraft/"
+        },
+        {
+            "title": "Wolf 2D",
+            "url": "/games/wolf2d/"
+        },
+        {
+            "title": "Wolf 3D",
+            "url": "/games/wolf3d/"
+        },
+        {
+            "title": "Wordle",
+            "url": "/games/wordle/"
+        },
+        {
+            "title": "World's Hardest Game",
+            "url": "/games/worlds-hardest-game/"
+        },
+        {
+            "title": "Wounded Summer Baby Edition",
+            "url": "/games/wounded-summer-baby-edition/"
+        },
+        {
+            "title": "X Trial Racing",
+            "url": "/games/x-trial-racing/"
+        },
+        {
+            "title": "XX142-B2EXE",
+            "url": "/games/xx142-b2exe/"
+        }
+        ]
 
-		<form id="sj-form" class="flex-center">
-			<input
-				id="sj-search-engine"
-				value="https://www.google.com/search?q=%s"
-				type="hidden"
-			/>
-			<input id="sj-address" type="text" placeholder="Search..." />
-        </form>
-            <div class="games-wrapper">
-                <span onclick="window.location.href = '/games/10-minutes-till-dawn/'"><p>10 Minutes Till Dawn</p></span>
-                <span onclick="window.location.href = '/games/1v1lol/'"><p>1v1lol</p></span>
-                <span onclick="window.location.href = '/games/1v1space/'"><p>1v1space</p></span>
-                <span onclick="window.location.href = '/games/2048/'"><p>2048</p></span>
-                <span onclick="window.location.href = '/games/9007199254740992/'"><p>9007199254740992</p></span>
-                <span onclick="window.location.href = '/games/DOOMORI/'"><p>DOOMORI</p></span>
-                <span onclick="window.location.href = '/games/OfflineParadise/'"><p>Offline Paradise</p></span>
-                <span onclick="window.location.href = '/games/ShapeShootout/'"><p>Shape Shootout</p></span>
-                <span onclick="window.location.href = '/games/Stickman-Survival/'"><p>Stickman Survival</p></span>
-                <span onclick="window.location.href = '/games/achievementunlocked/'"><p>Achievement Unlocked</p></span>
-                <span onclick="window.location.href = '/games/adarkroom/'"><p>A Dark Room</p></span>
-                <span onclick="window.location.href = '/games/adrenalinechallenge/'"><p>Adrenaline Challenge</p></span>
-                <span onclick="window.location.href = '/games/align-4/'"><p>Align 4</p></span>
-                <span onclick="window.location.href = '/games/angelunder/'"><p>Angel Under</p></span>
-                <span onclick="window.location.href = '/games/aquapark-slides/'"><p>Aquapark Slides</p></span>
-                <span onclick="window.location.href = '/games/astray/'"><p>Astray</p></span>
-                <span onclick="window.location.href = '/games/avalanche/'"><p>Avalanche</p></span>
-                <span onclick="window.location.href = '/games/bad-ice-cream-2/'"><p>Bad Ice Cream 2</p></span>
-                <span onclick="window.location.href = '/games/baldis-basics/'"><p>Baldi's Basics</p></span>
-                <span onclick="window.location.href = '/games/ballistic-chickens/'"><p>Ballistic Chickens</p></span>
-                <span onclick="window.location.href = '/games/bigredbutton/'"><p>Big Red Button</p></span>
-                <span onclick="window.location.href = '/games/blackknight/'"><p>Black Knight</p></span>
-                <span onclick="window.location.href = '/games/bloonstd/'"><p>Bloons TD</p></span>
-                <span onclick="window.location.href = '/games/bloonstd2/'"><p>Bloons TD 2</p></span>
-                <span onclick="window.location.href = '/games/bntts/'"><p>BNTTS</p></span>
-                <span onclick="window.location.href = '/games/bonkio/'"><p>Bonk.io</p></span>
-                <span onclick="window.location.href = '/games/boxhead2play/'"><p>Boxhead 2 Play</p></span>
-                <span onclick="window.location.href = '/games/btd5/'"><p>Bloons TD 5</p></span>
-                <span onclick="window.location.href = '/games/burger-and-frights/'"><p>Burger And Frights</p></span>
-                <span onclick="window.location.href = '/games/champion-island/'"><p>Champion Island</p></span>
-                <span onclick="window.location.href = '/games/cluster-rush/'"><p>Cluster Rush</p></span>
-                <span onclick="window.location.href = '/games/connect3/'"><p>Connect 3</p></span>
-                <span onclick="window.location.href = '/games/cookie-clicker/'"><p>Cookie Clicker</p></span>
-                <span onclick="window.location.href = '/games/craftmine/'"><p>Craftmine</p></span>
-                <span onclick="window.location.href = '/games/ctr/'"><p>CTR</p></span>
-                <span onclick="window.location.href = '/games/ctr-holiday/'"><p>CTR Holiday</p></span>
-                <span onclick="window.location.href = '/games/ctr-tr/'"><p>CTR TR</p></span>
-                <span onclick="window.location.href = '/games/death-run-3d/'"><p>Death Run 3D</p></span>
-                <span onclick="window.location.href = '/games/defend-the-tank/'"><p>Defend The Tank</p></span>
-                <span onclick="window.location.href = '/games/dodge/'"><p>Dodge</p></span>
-                <span onclick="window.location.href = '/games/doge2048/'"><p>Doge 2048</p></span>
-                <span onclick="window.location.href = '/games/doublewires/'"><p>Double Wires</p></span>
-                <span onclick="window.location.href = '/games/draw-the-hill/'"><p>Draw The Hill</p></span>
-                <span onclick="window.location.href = '/games/drift-boss/'"><p>Drift Boss</p></span>
-                <span onclick="window.location.href = '/games/drive-mad/'"><p>Drive Mad</p></span>
-                <span onclick="window.location.href = '/games/ducklife2/'"><p>Duck Life 2</p></span>
-                <span onclick="window.location.href = '/games/ducklife4/'"><p>Duck Life 4</p></span>
-                <span onclick="window.location.href = '/games/elasticman/'"><p>Elastic Man</p></span>
-                <span onclick="window.location.href = '/games/endlesswar3/'"><p>Endless War 3</p></span>
-                <span onclick="window.location.href = '/games/escapingtheprison/'"><p>Escaping The Prison</p></span>
-                <span onclick="window.location.href = '/games/evil-glitch/'"><p>Evil Glitch</p></span>
-                <span onclick="window.location.href = '/games/evolution/'"><p>Evolution</p></span>
-                <span onclick="window.location.href = '/games/fairsquares/'"><p>Fair Squares</p></span>
-                <span onclick="window.location.href = '/games/fantasy-dash/'"><p>Fantasy Dash</p></span>
-                <span onclick="window.location.href = '/games/fireboywatergirlforesttemple/'"><p>Fireboy & Watergirl Forest Temple</p></span>
-                <span onclick="window.location.href = '/games/frying-nemo/'"><p>Frying Nemo</p></span>
-                <span onclick="window.location.href = '/games/fuclient/'"><p>Fuclient</p></span>
-                <span onclick="window.location.href = '/games/gachalife/'"><p>Gacha Life</p></span>
-                <span onclick="window.location.href = '/games/game-inside/'"><p>Game Inside</p></span>
-                <span onclick="window.location.href = '/games/gdtd/'"><p>GDTD</p></span>
-                <span onclick="window.location.href = '/games/geochallenge/'"><p>Geo Challenge</p></span>
-                <span onclick="window.location.href = '/games/geodash/'"><p>Geo Dash</p></span>
-                <span onclick="window.location.href = '/games/geodashlite/'"><p>Geo Dash Lite</p></span>
-                <span onclick="window.location.href = '/games/geogeo/'"><p>Geo Geo</p></span>
-                <span onclick="window.location.href = '/games/geojump/'"><p>Geo Jump</p></span>
-                <span onclick="window.location.href = '/games/georash/'"><p>Geo Rash</p></span>
-                <span onclick="window.location.href = '/games/goodnight/'"><p>Goodnight</p></span>
-                <span onclick="window.location.href = '/games/google-feud/'"><p>Google Feud</p></span>
-                <span onclick="window.location.href = '/games/grindcraft/'"><p>Grindcraft</p></span>
-                <span onclick="window.location.href = '/games/happy-hop/'"><p>Happy Hop</p></span>
-                <span onclick="window.location.href = '/games/happywheels/'"><p>Happy Wheels</p></span>
-                <span onclick="window.location.href = '/games/hextris/'"><p>Hextris</p></span>
-                <span onclick="window.location.href = '/games/iceagebaby/'"><p>Ice Age Baby</p></span>
-                <span onclick="window.location.href = '/games/idle-shark/'"><p>Idle Shark</p></span>
-                <span onclick="window.location.href = '/games/jetpack-joyride/'"><p>Jetpack Joyride</p></span>
-                <span onclick="window.location.href = '/games/level13/'"><p>Level 13</p></span>
-                <span onclick="window.location.href = '/games/linerider/'"><p>Line Rider</p></span>
-                <span onclick="window.location.href = '/games/madalin-stunt-cars-2/'"><p>Madalin Stunt Cars 2</p></span>
-                <span onclick="window.location.href = '/games/mc2d/'"><p>MC2D</p></span>
-                <span onclick="window.location.href = '/games/merge-round-racers/'"><p>Merge Round Racers</p></span>
-                <span onclick="window.location.href = '/games/minesweeper/'"><p>Minesweeper</p></span>
-                <span onclick="window.location.href = '/games/missiles/'"><p>Missiles</p></span>
-                <span onclick="window.location.href = '/games/monster-tracks/'"><p>Monster Tracks</p></span>
-                <span onclick="window.location.href = '/games/motox3m/'"><p>Moto X3M</p></span>
-                <span onclick="window.location.href = '/games/motox3m-pool/'"><p>Moto X3M Pool</p></span>
-                <span onclick="window.location.href = '/games/n-gon/'"><p>N-Gon</p></span>
-                <span onclick="window.location.href = '/games/ns-shaft/'"><p>NS Shaft</p></span>
-                <span onclick="window.location.href = '/games/om-bounce/'"><p>OM Bounce</p></span>
-                <span onclick="window.location.href = '/games/osu!/'"><p>Osu!</p></span>
-                <span onclick="window.location.href = '/games/pandemic2/'"><p>Pandemic 2</p></span>
-                <span onclick="window.location.href = '/games/particle-clicker/'"><p>Particle Clicker</p></span>
-                <span onclick="window.location.href = '/games/particleclicker/'"><p>Particle Clicker</p></span>
-                <span onclick="window.location.href = '/games/piclient/'"><p>Pi Client</p></span>
-                <span onclick="window.location.href = '/games/pigeon-ascent/'"><p>Pigeon Ascent</p></span>
-                <span onclick="window.location.href = '/games/popcat-classic/'"><p>Popcat Classic</p></span>
-                <span onclick="window.location.href = '/games/portalflash/'"><p>Portal Flash</p></span>
-                <span onclick="window.location.href = '/games/protektor/'"><p>Protektor</p></span>
-                <span onclick="window.location.href = '/games/push-the-square/'"><p>Push The Square</p></span>
-                <span onclick="window.location.href = '/games/retro-bowl/'"><p>Retro Bowl</p></span>
-                <span onclick="window.location.href = '/games/riddletransfer/'"><p>Riddle Transfer</p></span>
-                <span onclick="window.location.href = '/games/riddletransfer2/'"><p>Riddle Transfer 2</p></span>
-                <span onclick="window.location.href = '/games/robuxclicker/'"><p>Robux Clicker</p></span>
-                <span onclick="window.location.href = '/games/runner/'"><p>Runner</p></span>
-                <span onclick="window.location.href = '/games/sandboxels/'"><p>Sandboxels</p></span>
-                <span onclick="window.location.href = '/games/santy-is-home/'"><p>Santy Is Home</p></span>
-                <span onclick="window.location.href = '/games/scrapmetal/'"><p>Scrap Metal</p></span>
-                <span onclick="window.location.href = '/games/scratcharia/'"><p>Scratcharia</p></span>
-                <span onclick="window.location.href = '/games/shogunshowdown/'"><p>Shogun Showdown</p></span>
-                <span onclick="window.location.href = '/games/shuttledeck/'"><p>Shuttle Deck</p></span>
-                <span onclick="window.location.href = '/games/sky-car-stunt/'"><p>Sky Car Stunt</p></span>
-                <span onclick="window.location.href = '/games/slime-rush-td/'"><p>Slime Rush TD</p></span>
-                <span onclick="window.location.href = '/games/slope-2/'"><p>Slope 2</p></span>
-                <span onclick="window.location.href = '/games/smokingbarrels/'"><p>Smoking Barrels</p></span>
-                <span onclick="window.location.href = '/games/soccer-random/'"><p>Soccer Random</p></span>
-                <span onclick="window.location.href = '/games/soldier-legend/'"><p>Soldier Legend</p></span>
-                <span onclick="window.location.href = '/games/soundboard/'"><p>Soundboard</p></span>
-                <span onclick="window.location.href = '/games/space-company/'"><p>Space Company</p></span>
-                <span onclick="window.location.href = '/games/spelunky/'"><p>Spelunky</p></span>
-                <span onclick="window.location.href = '/games/spinningrat/'"><p>Spinning Rat</p></span>
-                <span onclick="window.location.href = '/games/stack/'"><p>Stack</p></span>
-                <span onclick="window.location.href = '/games/stack-bump-3d/'"><p>Stack Bump 3D</p></span>
-                <span onclick="window.location.href = '/games/stealingthediamond/'"><p>Stealing The Diamond</p></span>
-                <span onclick="window.location.href = '/games/stick-archers/'"><p>Stick Archers</p></span>
-                <span onclick="window.location.href = '/games/stick-merge/'"><p>Stick Merge</p></span>
-                <span onclick="window.location.href = '/games/stickwar/'"><p>Stick War</p></span>
-                <span onclick="window.location.href = '/games/stormthehouse2/'"><p>Storm The House 2</p></span>
-                <span onclick="window.location.href = '/games/subway-surfers/'"><p>Subway Surfers</p></span>
-                <span onclick="window.location.href = '/games/subway-surfers-ny/'"><p>Subway Surfers NY</p></span>
-                <span onclick="window.location.href = '/games/superhot/'"><p>Superhot</p></span>
-                <span onclick="window.location.href = '/games/supermarioconstruct/'"><p>Super Mario Construct</p></span>
-                <span onclick="window.location.href = '/games/sushi-unroll/'"><p>Sushi Unroll</p></span>
-                <span onclick="window.location.href = '/games/synesthesia/'"><p>Synesthesia</p></span>
-                <span onclick="window.location.href = '/games/tactical-weapon-pack-2/'"><p>Tactical Weapon Pack 2</p></span>
-                <span onclick="window.location.href = '/games/the-hotel/'"><p>The Hotel</p></span>
-                <span onclick="window.location.href = '/games/tiny-fishing/'"><p>Tiny Fishing</p></span>
-                <span onclick="window.location.href = '/games/tiny-islands/'"><p>Tiny Islands</p></span>
-                <span onclick="window.location.href = '/games/tosstheturtle/'"><p>Toss The Turtle</p></span>
-                <span onclick="window.location.href = '/games/townscaper/'"><p>Townscaper</p></span>
-                <span onclick="window.location.href = '/games/twitch-tetris/'"><p>Twitch Tetris</p></span>
-                <span onclick="window.location.href = '/games/volley-random/'"><p>Volley Random</p></span>
-                <span onclick="window.location.href = '/games/weavesilk/'"><p>Weavesilk</p></span>
-                <span onclick="window.location.href = '/games/webgl-fluid-simulation/'"><p>WebGL Fluid Simulation</p></span>
-                <span onclick="window.location.href = '/games/webxash/'"><p>WebXash</p></span>
-                <span onclick="window.location.href = '/games/wiicraft/'"><p>Wiicraft</p></span>
-                <span onclick="window.location.href = '/games/wolf2d/'"><p>Wolf 2D</p></span>
-                <span onclick="window.location.href = '/games/wolf3d/'"><p>Wolf 3D</p></span>
-                <span onclick="window.location.href = '/games/wordle/'"><p>Wordle</p></span>
-                <span onclick="window.location.href = '/games/worlds-hardest-game/'"><p>World's Hardest Game</p></span>
-                <span onclick="window.location.href = '/games/wounded-summer-baby-edition/'"><p>Wounded Summer Baby Edition</p></span>
-                <span onclick="window.location.href = '/games/x-trial-racing/'"><p>X Trial Racing</p></span>
-                <span onclick="window.location.href = '/games/xx142-b2exe/'"><p>XX142-B2EXE</p></span>
 
-            </div>
-		<p style="position: fixed; bottom: 10px; left: 10px; color: white;">
-			V. 1.3.1 
-			<br>-<br>
-			fixed all games (now 133 games)
-            <br>
-            FIXED UI
-		</p>
-	</body>
+        const gamesgrid = document.querySelector('.games');
+
+        gamedata.forEach(game => {
+        const element = document.createElement('card');
+        element.setAttribute('id', 'gamecard');
+        element.setAttribute('onclick', `window.location.href = "${game.url}"`);
+        element.setAttribute('title', 'Click to play ' + game.title);
+        element.innerHTML = `<p><i>${game.title}</i></p>`
+        gamesgrid.appendChild(element)
+        });
+
+        function analyzeFilters(data) {
+        const blocked = data.results
+            .filter(r => r.blocked === true)
+            .map(r => r.name);
+
+        const allowed = data.results
+            .filter(r => r.blocked === false)
+            .map(r => r.name);
+
+        return {
+            blocked,
+            allowed
+        };
+    }
+    </script>
+</body>
 </html>

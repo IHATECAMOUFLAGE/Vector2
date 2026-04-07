@@ -60,3 +60,11 @@ form.addEventListener("submit", async (event) => {
 	document.body.appendChild(frame.frame);	
 	frame.go(url);
 });
+
+function proxyNavigate(url) {
+    const proxied = search(url, searchEngine.value); // your existing search() → proxy rewrite
+    const frame = scramjet.createFrame();
+    frame.frame.id = "sj-frame";
+    document.body.appendChild(frame.frame);
+    frame.go(proxied);
+}

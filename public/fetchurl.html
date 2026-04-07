@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infared</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+        :root {
+            --nav-text-color: rgb(203, 203, 203);
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            font-family: "Rubik", sans-serif;
+            font-weight: 450;
+        }
+
+        html, body {
+            width: 100%;
+            height: auto;
+            min-height: 100vh;
+            background: rgb(19, 19, 19);
+        }
+
+        .screensizewarn {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: black;
+            color: white;
+            z-index: 9999;
+            width: 100%;
+            height: 100vh;
+            text-align: center;
+            font-style: italic;
+            font-weight: 100;
+            font-size: 15px;
+        }
+
+        nav {
+            margin-bottom: 100px;
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100px;
+            color: rgb(55, 55, 55);
+            font-size: 17px;
+            font-weight: 700;
+
+            & li {
+                cursor: pointer;
+                user-select: none;
+            }
+
+            & ul[data-main] {
+                position: absolute;
+                left: 5vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+                gap: 35px;
+
+                & img {
+                    background-position: center;
+                    background-size: 100%;
+                    background-repeat: no-repeat;
+                    width: 130px;
+                    height: 80px;
+                    border: none;
+                    outline: none;
+                    display: block;
+                }
+
+                & li {
+                    transition: 0.2s;
+                }
+
+                & li[data-selected] {
+                    color: var(--nav-text-color);
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        width: 100%;
+                        height: 1.5px;
+                        background: var(--nav-text-color);
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                    }
+                }
+
+                & li:hover {
+                    color: var(--nav-text-color);
+                }   
+            }
+            & ul[data-signup] {
+                z-index: 1;
+
+                & li {
+                    background: rgb(57, 56, 56);
+                    color: white;
+                    border-radius: 100vh;
+                    width: 80px;
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 20px;
+                    padding: 10px;
+                    font-size: 15px;
+                    position: absolute;
+                    right: 5vw;
+                    transform: translateY(-20px);
+                    border: rgb(181, 181, 181) 2px solid;
+                    box-shadow: 0 0 1px rgb(255, 255, 255);
+                }
+            }
+        }
+
+        main {
+            position: absolute;
+            left: calc(5% - 2.5rem);
+            width: calc(90% + 5em);
+
+            & .games {
+                border-radius: 5px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, 200px);
+                grid-auto-rows: 1fr;
+                gap: 1em;
+                padding-top: 2em;
+                padding-bottom: 2em;
+                margin-bottom: 4em;
+                justify-content: center;
+                align-content: center;
+                justify-items: center;
+                align-items: center;
+                border: none;
+                background-image: url('./img/background.png');
+
+                & > card {
+                    cursor: pointer;
+                    user-select: none;
+                    backdrop-filter: blur(10px);
+                    text-align: center;
+                    background: rgba(255, 255, 255, 0.4);
+                    height: 200px;
+                    width: 200px;
+                    overflow: hidden;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    align-content: center;
+                    justify-content: center;
+                    border: 1px black solid;
+                    border-radius: 5px;
+                }
+            }
+        }
+
+        @media (max-width: 800px) {
+            body > * {
+                display: none;
+            }
+
+            .screensizewarn {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            ul[data-signup] {
+                display: none;
+            }
+        }
+        .linkchecker {
+            width: calc(100% - 4em);
+            padding: 2em;
+            color: white;
+            text-align: center;
+        }
+
+        .linkchecker h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--nav-text-color);
+        }
+
+        #urlInput {
+            width: 60%;
+            max-width: 500px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid rgb(80, 80, 80);
+            background: rgb(30, 30, 30);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        #urlInput:focus {
+            border-color: var(--nav-text-color);
+        }
+
+        #checkBtn {
+            margin-left: 10px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            background: rgb(57, 56, 56);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid rgb(181, 181, 181);
+            transition: 0.2s;
+        }
+
+        #checkBtn:hover {
+            background: rgb(80, 80, 80);
+        }
+
+        #results {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgb(25, 25, 25);
+            border-radius: 10px;
+            border: 1px solid rgb(60, 60, 60);
+            width: 80%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .result-section {
+            margin-bottom: 20px;
+        }
+
+        .result-section h3 {
+            color: var(--nav-text-color);
+            margin-bottom: 10px;
+        }
+
+        .result-section ul {
+            margin-left: 20px;
+        }
+
+        .result-section li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="screensizewarn">
+        <h1>Mobile devices are not supported<br><br>If you believe this is an issue, join the discord: https://discord.gg/example</h1>
+    </div>
+    <nav>
+        <ul data-main>
+            <li data-logo onclick="window.location.href = '/'"><img src="./img/logo.png" alt="infared logo" title="Click to go Home"></li>
+            <li onclick="window.location.href = '/'" title="Click to go Home">Home</li>
+            <li onclick="window.location.href = '/browser.html'" title="Click to browse">Browser</li>
+            <li onclick="window.location.href = '/exploits.html'" title="Click to find exploits">Exploits</li>
+            <li onclick="window.location.href = '/ai.html'" title="Click to chat with AI">AI</li>
+            <li data-selected onclick="window.location.href = '/fetchurl.html'" title="Click to check links">Link Checker</li>
+        </ul>
+        <ul data-signup>
+            <li data-signup onclick="window.location.href = 'https://discord.gg/example'">Discord</li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="linkchecker">
+            <h2>Link Checker</h2>
+
+            <input id="urlInput" type="text" placeholder="Enter a URL to check...">
+            <button id="checkBtn">Check</button>
+
+            <div id="results">
+                <!-- This is replaced by the fetcher json duhh-->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const input = document.getElementById("urlInput");
+        const btn = document.getElementById("checkBtn");
+        const resultsBox = document.getElementById("results");
+
+        btn.addEventListener("click", async () => {
+            const url = input.value.trim();
+            if (!url) {
+                resultsBox.innerHTML = "<p>Please enter a URL.</p>";
+                return;
+            }
+
+            resultsBox.innerHTML = "<p>Checking...</p>";
+
+            try {
+                const res = await fetch(`/check?url=${encodeURIComponent(url)}`);
+                const data = await res.json();
+
+                const blocked = data.results.filter(r => r.blocked === true).map(r => r.name);
+                const allowed = data.results.filter(r => r.blocked === false).map(r => r.name);
+
+                resultsBox.innerHTML = `
+                    <div class="result-section">
+                        <h3>Blocked By (${blocked.length})</h3>
+                        <ul>${blocked.map(b => `<li>${b}</li>`).join("")}</ul>
+                    </div>
+
+                    <div class="result-section">
+                        <h3>Allowed By (${allowed.length})</h3>
+                        <ul>${allowed.map(a => `<li>${a}</li>`).join("")}</ul>
+                    </div>
+                `;
+            } catch (err) {
+                resultsBox.innerHTML = "<p>Error checking URL.</p>";
+            }
+        });
+    </script>
+</body>
+</html>

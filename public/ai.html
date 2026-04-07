@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infared</title>
+    <script src="/scram/scramjet.all.js"></script>
+	<script src="baremux/index.js" defer></script>
+	<script src="epoxy/index.js" defer></script>
+	<script src="register-sw.js" defer></script>
+	<script src="search.js" defer></script>
+	<script src="index.js" defer></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+        :root {
+            --nav-text-color: rgb(203, 203, 203);
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            font-family: "Rubik", sans-serif;
+            font-weight: 450;
+        }
+
+        html, body {
+            width: 100%;
+            height: auto;
+            min-height: 100vh;
+            background: rgb(19, 19, 19);
+        }
+
+        .screensizewarn {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: black;
+            color: white;
+            z-index: 9999;
+            width: 100%;
+            height: 100vh;
+            text-align: center;
+            font-style: italic;
+            font-weight: 100;
+            font-size: 15px;
+        }
+
+        nav {
+            margin-bottom: 100px;
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100px;
+            color: rgb(55, 55, 55);
+            font-size: 17px;
+            font-weight: 700;
+
+            & li {
+                cursor: pointer;
+                user-select: none;
+            }
+
+            & ul[data-main] {
+                position: absolute;
+                left: 5vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: row;
+                gap: 35px;
+
+                & img {
+                    background-position: center;
+                    background-size: 100%;
+                    background-repeat: no-repeat;
+                    width: 130px;
+                    height: 80px;
+                    border: none;
+                    outline: none;
+                    display: block;
+                }
+
+                & li {
+                    transition: 0.2s;
+                }
+
+                & li[data-selected] {
+                    color: var(--nav-text-color);
+                    position: relative;
+
+                    &::after {
+                        content: '';
+                        width: 100%;
+                        height: 1.5px;
+                        background: var(--nav-text-color);
+                        position: absolute;
+                        bottom: -10px;
+                        left: 0;
+                    }
+                }
+
+                & li:hover {
+                    color: var(--nav-text-color);
+                }   
+            }
+            & ul[data-signup] {
+                z-index: 1;
+
+                & li {
+                    background: rgb(57, 56, 56);
+                    color: white;
+                    border-radius: 100vh;
+                    width: 80px;
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 20px;
+                    padding: 10px;
+                    font-size: 15px;
+                    position: absolute;
+                    right: 5vw;
+                    transform: translateY(-20px);
+                    border: rgb(181, 181, 181) 2px solid;
+                    box-shadow: 0 0 1px rgb(255, 255, 255);
+                }
+            }
+        }
+
+        main {
+            position: absolute;
+            left: calc(5% - 2.5rem);
+            width: calc(90% + 5em);
+
+            & .games {
+                border-radius: 5px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, 200px);
+                grid-auto-rows: 1fr;
+                gap: 1em;
+                padding-top: 2em;
+                padding-bottom: 2em;
+                margin-bottom: 4em;
+                justify-content: center;
+                align-content: center;
+                justify-items: center;
+                align-items: center;
+                border: none;
+                background-image: url('./img/background.png');
+
+                & > card {
+                    cursor: pointer;
+                    user-select: none;
+                    backdrop-filter: blur(10px);
+                    text-align: center;
+                    background: rgba(255, 255, 255, 0.4);
+                    height: 200px;
+                    width: 200px;
+                    overflow: hidden;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    align-content: center;
+                    justify-content: center;
+                    border: 1px black solid;
+                    border-radius: 5px;
+                }
+            }
+        }
+
+        @media (max-width: 800px) {
+            body > * {
+                display: none;
+            }
+
+            .screensizewarn {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            ul[data-signup] {
+                display: none;
+            }
+        }
+        .aipage {
+            width: calc(100% - 4em);
+            padding: 2em;
+            color: white;
+            text-align: center;
+        }
+
+        .aipage h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--nav-text-color);
+        }
+
+        #chatbox {
+            width: 80%;
+            max-width: 700px;
+            height: 400px;
+            margin: 0 auto 20px auto;
+            padding: 15px;
+            background: rgb(25, 25, 25);
+            border-radius: 10px;
+            border: 1px solid rgb(60, 60, 60);
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .message.user {
+            color: rgb(180, 180, 255);
+        }
+
+        .message.ai {
+            color: rgb(200, 255, 200);
+        }
+
+        .aibar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #aInput, #aiInput {
+            width: 60%;
+            max-width: 500px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid rgb(80, 80, 80);
+            background: rgb(30, 30, 30);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        #aiInput:focus {
+            border-color: var(--nav-text-color);
+        }
+
+        #aiSend {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            background: rgb(57, 56, 56);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border: 2px solid rgb(181, 181, 181);
+            transition: 0.2s;
+        }
+
+        #aiSend:hover {
+            background: rgb(80, 80, 80);
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            max-width: 70%;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .message.user {
+            background: rgb(57, 56, 56);
+            color: white;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .message.ai {
+            background: rgb(35, 35, 35);
+            color: rgb(220, 220, 220);
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .message pre {
+            background: rgb(20, 20, 20);
+            padding: 10px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        .message code {
+            font-family: monospace;
+            color: rgb(200, 200, 200);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="screensizewarn">
+        <h1>Mobile devices are not supported<br><br>If you believe this is an issue, join the discord: https://discord.gg/example</h1>
+    </div>
+    <nav>
+        <ul data-main>
+            <li data-logo onclick="window.location.href = '/'"><img src="./img/logo.png" alt="infared logo" title="Click to go Home"></li>
+            <li onclick="window.location.href = '/'" title="Click to go Home">Home</li>
+            <li onclick="window.location.href = '/browser.html'" title="Click to browse">Browser</li>
+            <li data-selected onclick="window.location.href = '/ai.html'" title="Click to chat with AI">AI</li>
+            <li onclick="window.location.href = '/fetchurl.html'" title="Click to check links">Link Checker</li>
+        </ul>
+        <ul data-signup>
+            <li data-signup onclick="window.location.href = 'https://discord.gg/example'">Discord</li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="aipage">
+            <h2>AI Assistant</h2>
+
+            <div id="chatbox"></div>
+
+            <div class="aibar">
+                <input 
+                    id="aiInput" 
+                    type="text" 
+                    placeholder="Ask something..."
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                >
+                <button id="aiSend">Send</button>
+            </div>
+        </div>
+    </main>
+    <script>
+        const chatbox = document.getElementById("chatbox");
+        const aiInput = document.getElementById("aiInput");
+        const aiSend = document.getElementById("aiSend");
+
+        function addMessage(text, sender) {
+            const msg = document.createElement("div");
+            msg.classList.add("message", sender);
+            if (sender === "ai") {
+                msg.innerHTML = marked.parse(text);
+            } else {
+                msg.textContent = text;
+            }
+            chatbox.appendChild(msg);
+            chatbox.scrollTop = chatbox.scrollHeight;
+            return msg;
+        }
+
+        function startThinking() {
+            let dots = 1;
+            const msg = addMessage("Thinking.", "ai");
+            const interval = setInterval(() => {
+                dots = (dots % 3) + 1;
+                msg.textContent = "Thinking" + ".".repeat(dots);
+            }, 500);
+            return { msg, interval };
+        }
+
+        async function sendToAI(query) {
+            const url = `https://still-unit-4c34.ihatecamouflage.workers.dev/api/v1/query?query=${encodeURIComponent(query)}&key=3098ursjr903w`;
+            const res = await fetch(url);
+            const data = await res.json();
+            return data.response;
+        }
+
+        aiSend.addEventListener("click", async () => {
+            const text = aiInput.value.trim();
+            if (!text) return;
+            addMessage(text, "user");
+            aiInput.value = "";
+            const thinking = startThinking();
+            const aiReply = await sendToAI(text);
+            clearInterval(thinking.interval);
+            thinking.msg.innerHTML = marked.parse(aiReply);
+        });
+
+        aiInput.addEventListener("keydown", e => {
+            if (e.key === "Enter") aiSend.click();
+        });
+    </script>
+</body>
+</html>
