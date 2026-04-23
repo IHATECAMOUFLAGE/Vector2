@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infared</title>
-    <script src="/scram/scramjet.all.js"></script>
-	<script src="baremux/index.js" defer></script>
-	<script src="epoxy/index.js" defer></script>
-	<script src="register-sw.js" defer></script>
-	<script src="search.js" defer></script>
-	<script src="index.js" defer></script>
+
+    <!-- Lumin SDK -->
+    <script src="https://cdn.lumin.software/sdk/lumin-sdk.min.js"></script>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
         :root {
             --nav-text-color: rgb(203, 203, 203);
         }
-
 
         * {
             margin: 0;
@@ -59,125 +56,108 @@
             color: rgb(55, 55, 55);
             font-size: 17px;
             font-weight: 700;
+        }
 
-            & li {
-                cursor: pointer;
-                user-select: none;
-            }
+        nav ul[data-main] {
+            position: absolute;
+            left: 5vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            gap: 35px;
+        }
 
-            & ul[data-main] {
-                position: absolute;
-                left: 5vw;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: row;
-                gap: 35px;
+        nav ul[data-main] img {
+            width: 130px;
+            height: 80px;
+        }
 
-                & img {
-                    background-position: center;
-                    background-size: 100%;
-                    background-repeat: no-repeat;
-                    width: 130px;
-                    height: 80px;
-                    border: none;
-                    outline: none;
-                    display: block;
-                }
+        nav ul[data-main] li {
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-                & li {
-                    transition: 0.2s;
-                }
+        nav ul[data-main] li[data-selected] {
+            color: var(--nav-text-color);
+            position: relative;
+        }
 
-                & li[data-selected] {
-                    color: var(--nav-text-color);
-                    position: relative;
+        nav ul[data-main] li[data-selected]::after {
+            content: '';
+            width: 100%;
+            height: 1.5px;
+            background: var(--nav-text-color);
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+        }
 
-                    &::after {
-                        content: '';
-                        width: 100%;
-                        height: 1.5px;
-                        background: var(--nav-text-color);
-                        position: absolute;
-                        bottom: -10px;
-                        left: 0;
-                    }
-                }
+        nav ul[data-main] li:hover {
+            color: var(--nav-text-color);
+        }
 
-                & li:hover {
-                    color: var(--nav-text-color);
-                }   
-            }
-            & ul[data-signup] {
-                z-index: 1;
-
-                & li {
-                    background: rgb(57, 56, 56);
-                    color: white;
-                    border-radius: 100vh;
-                    width: 80px;
-                    text-align: center;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 20px;
-                    padding: 10px;
-                    font-size: 15px;
-                    position: absolute;
-                    right: 5vw;
-                    transform: translateY(-20px);
-                    border: rgb(181, 181, 181) 2px solid;
-                    box-shadow: 0 0 1px rgb(255, 255, 255);
-                }
-            }
+        nav ul[data-signup] li {
+            background: rgb(57, 56, 56);
+            color: white;
+            border-radius: 100vh;
+            width: 80px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 20px;
+            padding: 10px;
+            font-size: 15px;
+            position: absolute;
+            right: 5vw;
+            transform: translateY(-20px);
+            border: rgb(181, 181, 181) 2px solid;
+            box-shadow: 0 0 1px rgb(255, 255, 255);
         }
 
         main {
             position: absolute;
             left: calc(5% - 2.5rem);
             width: calc(90% + 5em);
+        }
 
-            & .games {
-                border-radius: 5px;
-                display: grid;
-                grid-template-columns: repeat(auto-fit, 200px);
-                grid-auto-rows: 1fr;
-                gap: 1em;
-                padding-top: 2em;
-                padding-bottom: 2em;
-                margin-bottom: 4em;
-                justify-content: center;
-                align-content: center;
-                justify-items: center;
-                align-items: center;
-                border: none;
-                background-image: url('./img/background.png');
+        .games {
+            border-radius: 5px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, 200px);
+            grid-auto-rows: 1fr;
+            gap: 1em;
+            padding-top: 2em;
+            padding-bottom: 2em;
+            margin-bottom: 4em;
+            justify-content: center;
+            align-content: center;
+            justify-items: center;
+            align-items: center;
+            background-image: url('./img/background.png');
+        }
 
-                & > card {
-                    cursor: pointer;
-                    user-select: none;
-                    backdrop-filter: blur(10px);
-                    text-align: center;
-                    background: rgba(255, 255, 255, 0.4);
-                    height: 200px;
-                    width: 200px;
-                    overflow: hidden;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    align-content: center;
-                    justify-content: center;
-                    border: 1px black solid;
-                    border-radius: 5px;
-                }
-            }
+        .games card {
+            cursor: pointer;
+            user-select: none;
+            backdrop-filter: blur(10px);
+            text-align: center;
+            background: rgba(255, 255, 255, 0.4);
+            height: 200px;
+            width: 200px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px black solid;
+            border-radius: 5px;
         }
 
         @media (max-width: 800px) {
             body > * {
                 display: none;
             }
-
             .screensizewarn {
                 display: flex;
             }
@@ -190,661 +170,53 @@
         }
     </style>
 </head>
+
 <body>
     <div class="screensizewarn">
         <h1>Mobile devices are not supported<br><br>If you believe this is an issue, join the discord: </h1>
     </div>
+
     <nav>
         <ul data-main>
-            <li data-logo onclick="window.location.href = '/'"><img src="./img/logo.png" alt="infared logo" title="Click to go Home"></li>
-            <li data-selected onclick="window.location.href = '/'" title="Click to go Home">Home</li>
-            <li onclick="window.location.href = '/browser.html'" title="Click to browse">Browser</li>
-            <li onclick="window.location.href = '/ai.html'" title="Click to chat with AI">AI</li>
-            <li onclick="window.location.href = '/fetchurl.html'" title="Click to check links">Link Checker</li>
+            <li data-logo onclick="window.location.href = '/'"><img src="./img/logo.png"></li>
+            <li data-selected onclick="window.location.href = '/'">Home</li>
+            <li onclick="window.location.href = '/browser.html'">Browser</li>
+            <li onclick="window.location.href = '/ai.html'">AI</li>
+            <li onclick="window.location.href = '/fetchurl.html'">Link Checker</li>
         </ul>
+
         <ul data-signup>
-            <li data-signup onclick="window.location.href = 'https://discord.gg/R7gxCVR7'">Discord</li>
+            <li onclick="window.location.href = 'https://discord.gg/R7gxCVR7'">Discord</li>
         </ul>
     </nav>
 
     <main>
-        <div class="games" id="games">
-        </div>
+        <div class="games" id="games"></div>
     </main>
-    <script>
-        const gamedata = [
-        {
-            "title": "10 Minutes Till Dawn",
-            "url": "/games/10-minutes-till-dawn/"
-        },
-        {
-            "title": "1v1lol",
-            "url": "/games/1v1lol/"
-        },
-        {
-            "title": "1v1space",
-            "url": "/games/1v1space/"
-        },
-        {
-            "title": "2048",
-            "url": "/games/2048/"
-        },
-        {
-            "title": "9007199254740992",
-            "url": "/games/9007199254740992/"
-        },
-        {
-            "title": "DOOMORI",
-            "url": "/games/DOOMORI/"
-        },
-        {
-            "title": "Offline Paradise",
-            "url": "/games/OfflineParadise/"
-        },
-        {
-            "title": "Shape Shootout",
-            "url": "/games/ShapeShootout/"
-        },
-        {
-            "title": "Stickman Survival",
-            "url": "/games/Stickman-Survival/"
-        },
-        {
-            "title": "Achievement Unlocked",
-            "url": "/games/achievementunlocked/"
-        },
-        {
-            "title": "A Dark Room",
-            "url": "/games/adarkroom/"
-        },
-        {
-            "title": "Adrenaline Challenge",
-            "url": "/games/adrenalinechallenge/"
-        },
-        {
-            "title": "Align 4",
-            "url": "/games/align-4/"
-        },
-        {
-            "title": "Angel Under",
-            "url": "/games/angelunder/"
-        },
-        {
-            "title": "Aquapark Slides",
-            "url": "/games/aquapark-slides/"
-        },
-        {
-            "title": "Astray",
-            "url": "/games/astray/"
-        },
-        {
-            "title": "Avalanche",
-            "url": "/games/avalanche/"
-        },
-        {
-            "title": "Bad Ice Cream 2",
-            "url": "/games/bad-ice-cream-2/"
-        },
-        {
-            "title": "Baldi's Basics",
-            "url": "/games/baldis-basics/"
-        },
-        {
-            "title": "Ballistic Chickens",
-            "url": "/games/ballistic-chickens/"
-        },
-        {
-            "title": "Big Red Button",
-            "url": "/games/bigredbutton/"
-        },
-        {
-            "title": "Black Knight",
-            "url": "/games/blackknight/"
-        },
-        {
-            "title": "Bloons TD",
-            "url": "/games/bloonstd/"
-        },
-        {
-            "title": "Bloons TD 2",
-            "url": "/games/bloonstd2/"
-        },
-        {
-            "title": "BNTTS",
-            "url": "/games/bntts/"
-        },
-        {
-            "title": "Bonk.io",
-            "url": "/games/bonkio/"
-        },
-        {
-            "title": "Boxhead 2 Play",
-            "url": "/games/boxhead2play/"
-        },
-        {
-            "title": "Bloons TD 5",
-            "url": "/games/btd5/"
-        },
-        {
-            "title": "Burger And Frights",
-            "url": "/games/burger-and-frights/"
-        },
-        {
-            "title": "Champion Island",
-            "url": "/games/champion-island/"
-        },
-        {
-            "title": "Cluster Rush",
-            "url": "/games/cluster-rush/"
-        },
-        {
-            "title": "Connect 3",
-            "url": "/games/connect3/"
-        },
-        {
-            "title": "Cookie Clicker",
-            "url": "/games/cookie-clicker/"
-        },
-        {
-            "title": "Craftmine",
-            "url": "/games/craftmine/"
-        },
-        {
-            "title": "CTR",
-            "url": "/games/ctr/"
-        },
-        {
-            "title": "CTR Holiday",
-            "url": "/games/ctr-holiday/"
-        },
-        {
-            "title": "CTR TR",
-            "url": "/games/ctr-tr/"
-        },
-        {
-            "title": "Death Run 3D",
-            "url": "/games/death-run-3d/"
-        },
-        {
-            "title": "Defend The Tank",
-            "url": "/games/defend-the-tank/"
-        },
-        {
-            "title": "Dodge",
-            "url": "/games/dodge/"
-        },
-        {
-            "title": "Doge 2048",
-            "url": "/games/doge2048/"
-        },
-        {
-            "title": "Double Wires",
-            "url": "/games/doublewires/"
-        },
-        {
-            "title": "Draw The Hill",
-            "url": "/games/draw-the-hill/"
-        },
-        {
-            "title": "Drift Boss",
-            "url": "/games/drift-boss/"
-        },
-        {
-            "title": "Drive Mad",
-            "url": "/games/drive-mad/"
-        },
-        {
-            "title": "Duck Life 2",
-            "url": "/games/ducklife2/"
-        },
-        {
-            "title": "Duck Life 4",
-            "url": "/games/ducklife4/"
-        },
-        {
-            "title": "Elastic Man",
-            "url": "/games/elasticman/"
-        },
-        {
-            "title": "Endless War 3",
-            "url": "/games/endlesswar3/"
-        },
-        {
-            "title": "Escaping The Prison",
-            "url": "/games/escapingtheprison/"
-        },
-        {
-            "title": "Evil Glitch",
-            "url": "/games/evil-glitch/"
-        },
-        {
-            "title": "Evolution",
-            "url": "/games/evolution/"
-        },
-        {
-            "title": "Fair Squares",
-            "url": "/games/fairsquares/"
-        },
-        {
-            "title": "Fantasy Dash",
-            "url": "/games/fantasy-dash/"
-        },
-        {
-            "title": "Fireboy & Watergirl Forest Temple",
-            "url": "/games/fireboywatergirlforesttemple/"
-        },
-        {
-            "title": "Frying Nemo",
-            "url": "/games/frying-nemo/"
-        },
-        {
-            "title": "Fuclient",
-            "url": "/games/fuclient/"
-        },
-        {
-            "title": "Gacha Life",
-            "url": "/games/gachalife/"
-        },
-        {
-            "title": "Game Inside",
-            "url": "/games/game-inside/"
-        },
-        {
-            "title": "GDTD",
-            "url": "/games/gdtd/"
-        },
-        {
-            "title": "Geo Challenge",
-            "url": "/games/geochallenge/"
-        },
-        {
-            "title": "Geo Dash",
-            "url": "/games/geodash/"
-        },
-        {
-            "title": "Geo Dash Lite",
-            "url": "/games/geodashlite/"
-        },
-        {
-            "title": "Geo Geo",
-            "url": "/games/geogeo/"
-        },
-        {
-            "title": "Geo Jump",
-            "url": "/games/geojump/"
-        },
-        {
-            "title": "Geo Rash",
-            "url": "/games/georash/"
-        },
-        {
-            "title": "Goodnight",
-            "url": "/games/goodnight/"
-        },
-        {
-            "title": "Google Feud",
-            "url": "/games/google-feud/"
-        },
-        {
-            "title": "Grindcraft",
-            "url": "/games/grindcraft/"
-        },
-        {
-            "title": "Happy Hop",
-            "url": "/games/happy-hop/"
-        },
-        {
-            "title": "Happy Wheels",
-            "url": "/games/happywheels/"
-        },
-        {
-            "title": "Hextris",
-            "url": "/games/hextris/"
-        },
-        {
-            "title": "Ice Age Baby",
-            "url": "/games/iceagebaby/"
-        },
-        {
-            "title": "Idle Shark",
-            "url": "/games/idle-shark/"
-        },
-        {
-            "title": "Jetpack Joyride",
-            "url": "/games/jetpack-joyride/"
-        },
-        {
-            "title": "Level 13",
-            "url": "/games/level13/"
-        },
-        {
-            "title": "Line Rider",
-            "url": "/games/linerider/"
-        },
-        {
-            "title": "Madalin Stunt Cars 2",
-            "url": "/games/madalin-stunt-cars-2/"
-        },
-        {
-            "title": "MC2D",
-            "url": "/games/mc2d/"
-        },
-        {
-            "title": "Merge Round Racers",
-            "url": "/games/merge-round-racers/"
-        },
-        {
-            "title": "Minesweeper",
-            "url": "/games/minesweeper/"
-        },
-        {
-            "title": "Missiles",
-            "url": "/games/missiles/"
-        },
-        {
-            "title": "Monster Tracks",
-            "url": "/games/monster-tracks/"
-        },
-        {
-            "title": "Moto X3M",
-            "url": "/games/motox3m/"
-        },
-        {
-            "title": "Moto X3M Pool",
-            "url": "/games/motox3m-pool/"
-        },
-        {
-            "title": "N-Gon",
-            "url": "/games/n-gon/"
-        },
-        {
-            "title": "NS Shaft",
-            "url": "/games/ns-shaft/"
-        },
-        {
-            "title": "OM Bounce",
-            "url": "/games/om-bounce/"
-        },
-        {
-            "title": "Osu!",
-            "url": "/games/osu!/"
-        },
-        {
-            "title": "Pandemic 2",
-            "url": "/games/pandemic2/"
-        },
-        {
-            "title": "Particle Clicker",
-            "url": "/games/particle-clicker/"
-        },
-        {
-            "title": "Particle Clicker",
-            "url": "/games/particleclicker/"
-        },
-        {
-            "title": "Pi Client",
-            "url": "/games/piclient/"
-        },
-        {
-            "title": "Pigeon Ascent",
-            "url": "/games/pigeon-ascent/"
-        },
-        {
-            "title": "Popcat Classic",
-            "url": "/games/popcat-classic/"
-        },
-        {
-            "title": "Portal Flash",
-            "url": "/games/portalflash/"
-        },
-        {
-            "title": "Protektor",
-            "url": "/games/protektor/"
-        },
-        {
-            "title": "Push The Square",
-            "url": "/games/push-the-square/"
-        },
-        {
-            "title": "Retro Bowl",
-            "url": "/games/retro-bowl/"
-        },
-        {
-            "title": "Riddle Transfer",
-            "url": "/games/riddletransfer/"
-        },
-        {
-            "title": "Riddle Transfer 2",
-            "url": "/games/riddletransfer2/"
-        },
-        {
-            "title": "Robux Clicker",
-            "url": "/games/robuxclicker/"
-        },
-        {
-            "title": "Runner",
-            "url": "/games/runner/"
-        },
-        {
-            "title": "Sandboxels",
-            "url": "/games/sandboxels/"
-        },
-        {
-            "title": "Santy Is Home",
-            "url": "/games/santy-is-home/"
-        },
-        {
-            "title": "Scrap Metal",
-            "url": "/games/scrapmetal/"
-        },
-        {
-            "title": "Scratcharia",
-            "url": "/games/scratcharia/"
-        },
-        {
-            "title": "Shogun Showdown",
-            "url": "/games/shogunshowdown/"
-        },
-        {
-            "title": "Shuttle Deck",
-            "url": "/games/shuttledeck/"
-        },
-        {
-            "title": "Sky Car Stunt",
-            "url": "/games/sky-car-stunt/"
-        },
-        {
-            "title": "Slime Rush TD",
-            "url": "/games/slime-rush-td/"
-        },
-        {
-            "title": "Slope 2",
-            "url": "/games/slope-2/"
-        },
-        {
-            "title": "Smoking Barrels",
-            "url": "/games/smokingbarrels/"
-        },
-        {
-            "title": "Soccer Random",
-            "url": "/games/soccer-random/"
-        },
-        {
-            "title": "Soldier Legend",
-            "url": "/games/soldier-legend/"
-        },
-        {
-            "title": "Soundboard",
-            "url": "/games/soundboard/"
-        },
-        {
-            "title": "Space Company",
-            "url": "/games/space-company/"
-        },
-        {
-            "title": "Spelunky",
-            "url": "/games/spelunky/"
-        },
-        {
-            "title": "Spinning Rat",
-            "url": "/games/spinningrat/"
-        },
-        {
-            "title": "Stack",
-            "url": "/games/stack/"
-        },
-        {
-            "title": "Stack Bump 3D",
-            "url": "/games/stack-bump-3d/"
-        },
-        {
-            "title": "Stealing The Diamond",
-            "url": "/games/stealingthediamond/"
-        },
-        {
-            "title": "Stick Archers",
-            "url": "/games/stick-archers/"
-        },
-        {
-            "title": "Stick Merge",
-            "url": "/games/stick-merge/"
-        },
-        {
-            "title": "Stick War",
-            "url": "/games/stickwar/"
-        },
-        {
-            "title": "Storm The House 2",
-            "url": "/games/stormthehouse2/"
-        },
-        {
-            "title": "Subway Surfers",
-            "url": "/games/subway-surfers/"
-        },
-        {
-            "title": "Subway Surfers NY",
-            "url": "/games/subway-surfers-ny/"
-        },
-        {
-            "title": "Superhot",
-            "url": "/games/superhot/"
-        },
-        {
-            "title": "Super Mario Construct",
-            "url": "/games/supermarioconstruct/"
-        },
-        {
-            "title": "Sushi Unroll",
-            "url": "/games/sushi-unroll/"
-        },
-        {
-            "title": "Synesthesia",
-            "url": "/games/synesthesia/"
-        },
-        {
-            "title": "Tactical Weapon Pack 2",
-            "url": "/games/tactical-weapon-pack-2/"
-        },
-        {
-            "title": "The Hotel",
-            "url": "/games/the-hotel/"
-        },
-        {
-            "title": "Tiny Fishing",
-            "url": "/games/tiny-fishing/"
-        },
-        {
-            "title": "Tiny Islands",
-            "url": "/games/tiny-islands/"
-        },
-        {
-            "title": "Toss The Turtle",
-            "url": "/games/tosstheturtle/"
-        },
-        {
-            "title": "Townscaper",
-            "url": "/games/townscaper/"
-        },
-        {
-            "title": "Twitch Tetris",
-            "url": "/games/twitch-tetris/"
-        },
-        {
-            "title": "Volley Random",
-            "url": "/games/volley-random/"
-        },
-        {
-            "title": "Weavesilk",
-            "url": "/games/weavesilk/"
-        },
-        {
-            "title": "WebGL Fluid Simulation",
-            "url": "/games/webgl-fluid-simulation/"
-        },
-        {
-            "title": "WebXash",
-            "url": "/games/webxash/"
-        },
-        {
-            "title": "Wiicraft",
-            "url": "/games/wiicraft/"
-        },
-        {
-            "title": "Wolf 2D",
-            "url": "/games/wolf2d/"
-        },
-        {
-            "title": "Wolf 3D",
-            "url": "/games/wolf3d/"
-        },
-        {
-            "title": "Wordle",
-            "url": "/games/wordle/"
-        },
-        {
-            "title": "World's Hardest Game",
-            "url": "/games/worlds-hardest-game/"
-        },
-        {
-            "title": "Wounded Summer Baby Edition",
-            "url": "/games/wounded-summer-baby-edition/"
-        },
-        {
-            "title": "X Trial Racing",
-            "url": "/games/x-trial-racing/"
-        },
-        {
-            "title": "XX142-B2EXE",
-            "url": "/games/xx142-b2exe/"
-        }
-        ]
 
+    <script>
+        const lumin = new LuminSDK({
+            mode: "app",
+            api: true
+        });
 
         const gamesgrid = document.querySelector('.games');
 
-        gamedata.forEach(game => {
-        const element = document.createElement('card');
-        element.setAttribute('id', 'gamecard');
-        element.setAttribute('onclick', `window.location.href = "${game.url}"`);
-        element.setAttribute('title', 'Click to play ' + game.title);
-        element.innerHTML = `<p><i>${game.title}</i></p>`
-        gamesgrid.appendChild(element)
+        lumin.api.getGames().then(games => {
+            games.forEach(game => {
+                const element = document.createElement('card');
+                element.innerHTML = `<p><i>${game.title}</i></p>`;
+
+                element.onclick = () => {
+                    lumin.api.openGame({
+                        id: game.id,
+                        sandbox: true
+                    });
+                };
+
+                gamesgrid.appendChild(element);
+            });
         });
-
-        function analyzeFilters(data) {
-        const blocked = data.results
-            .filter(r => r.blocked === true)
-            .map(r => r.name);
-
-        const allowed = data.results
-            .filter(r => r.blocked === false)
-            .map(r => r.name);
-
-        return {
-            blocked,
-            allowed
-        };
-    }
     </script>
 </body>
 </html>
