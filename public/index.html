@@ -195,28 +195,45 @@
     </main>
 
     <script>
-        const lumin = new LuminSDK({
-            mode: "app",
-            api: true
-        });
-
-        const gamesgrid = document.querySelector('.games');
-
-        lumin.api.getGames().then(games => {
-            games.forEach(game => {
-                const element = document.createElement('card');
-                element.innerHTML = `<p><i>${game.title}</i></p>`;
-
-                element.onclick = () => {
-                    lumin.api.openGame({
-                        id: game.id,
-                        sandbox: true
-                    });
-                };
-
-                gamesgrid.appendChild(element);
+        (async () => {
+            await Lumin.init({
+                headless: true,
+                onReady: () => console.log("Lumin ready"),
+                onError: (err) => console.error("Lumin error:", err)
             });
-        });
-    </script>
+        
+            const grid = document.getElementById("games");
+        
+            const result = await Lumin.getGames({
+                page: 1,
+                limit: 9999
+            });
+        
+            const images = await Promise.all(
+                result.games.map(g => Lumin.getImageUrl(g.image_token))
+            );
+        
+            result.games.forEach((game, i) => {
+                const element = document.createElement("card");
+        
+                element.innerHTML = `
+                    <img class="game-img" src="${images[i]}" style="width:100%;height:100%;object-fit:cover;">
+                    <p><i>${game.name}</i></p>
+                `;
+        
+                element.onclick = () => Lumin.loadGame(game.id);
+        
+                grid.appendChild(element);
+            });
+        
+            setInterval(() => {
+                document.querySelectorAll(".game-img").forEach(img => {
+                    if (!img.hasAttribute("loading")) {
+                        img.setAttribute("loading", "lazy");
+                    }
+                });
+            }, 1);
+        })();
+        </script>
 </body>
 </html>
